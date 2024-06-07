@@ -43,7 +43,7 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- *********************************************************************/
+ ************************************************************5 5*********/
 
 #define USE_BASE      // Enable the base controller code
 //#undef USE_BASE     // Disable the base controller code
@@ -104,7 +104,7 @@
   #include "diff_controller.h"
 
   /* Run the PID loop at 30 times per second */
-  #define PID_RATE           3     // Hz
+  #define PID_RATE           3    // Hz
 
   /* Convert the rate into an interval */
   const int PID_INTERVAL = 1000 / PID_RATE;
@@ -114,7 +114,7 @@
 
   /* Stop the robot if it hasn't received a movement command
    in this number of milliseconds */
-  #define AUTO_STOP_INTERVAL 12000
+  #define AUTO_STOP_INTERVAL 10000
   long lastMotorCommand = AUTO_STOP_INTERVAL;
 #endif
 
@@ -137,6 +137,13 @@ char argv2[16];
 // The arguments converted to integers
 long arg1;
 long arg2;
+
+struct WheelInfo{
+  unsigned char left_reverse;
+  unsigned char right_reverse;
+};
+
+WheelInfo revData;
 
 /* Clear the current command parameters */
 void resetCommand() {
@@ -219,7 +226,7 @@ int runCommand() {
     }
     else moving = 1;
     leftPID.TargetTicksPerFrame = arg1;
-    rightPID.TargetTicksPerFrame = arg2/3.5;
+    rightPID.TargetTicksPerFrame = arg2;
     Serial.println("OK"); 
     break;
   case MOTOR_RAW_PWM:

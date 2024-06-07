@@ -5,7 +5,7 @@
    for a particular motor driver.  Then add the appropriate
    #define near the top of the main ROSArduinoBridge.ino file.
    
-   *************************************************************/
+   *************************************************************/\
   
 #ifdef USE_BASE
    
@@ -57,14 +57,29 @@
   }
 #elif defined L298_MOTOR_DRIVER
   unsigned char reverse = 0;
+  unsigned char left_reverse = 0;
+  unsigned char right_reverse = 0;
+  
+  
+  int i = 0;
+  int spd = 0;
 
-  unsigned char readPWM(){
-    return reverse;
+  struct WheelInfo readRev(){
+    WheelInfo data;
+    data.left_reverse=left_reverse;
+    data.right_reverse=right_reverse;
+    return data;
+  }
+
+  int readSpeed(){
+    if (i == LEFT){
+      return spd;
+    }
   }
   
   void initMotorController() {
-    digitalWrite(RIGHT_MOTOR_ENABLE, HIGH);
     digitalWrite(LEFT_MOTOR_ENABLE, HIGH);
+    digitalWrite(RIGHT_MOTOR_ENABLE, HIGH);
   }
   
   void setMotorSpeed(int i, int spd) {
@@ -84,10 +99,12 @@
     if (i == LEFT) { 
       if      (reverse == 0) { analogWrite(LEFT_MOTOR_FORWARD, spd); analogWrite(LEFT_MOTOR_BACKWARD, 0); }
       else if (reverse == 1) { analogWrite(LEFT_MOTOR_BACKWARD, spd); analogWrite(LEFT_MOTOR_FORWARD, 0); }
+      left_reverse = reverse;
     }
     else /*if (i == RIGHT) //no need for condition*/ {
       if      (reverse == 0) { analogWrite(RIGHT_MOTOR_FORWARD, spd); analogWrite(RIGHT_MOTOR_BACKWARD, 0); }
       else if (reverse == 1) { analogWrite(RIGHT_MOTOR_BACKWARD, spd); analogWrite(RIGHT_MOTOR_FORWARD, 0); }
+      right_reverse = reverse;
     }
   }
   

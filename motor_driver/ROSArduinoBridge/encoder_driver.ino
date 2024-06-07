@@ -6,6 +6,7 @@
    #define near the top of the main ROSArduinoBridge.ino file.
    
    ************************************************************ */
+#include "motor_driver.h"
    
 #ifdef USE_BASE
 
@@ -71,11 +72,13 @@
 #elif defined(ARDUINO_ENC_OPT_COUNTER)
   volatile long left_enc_pos = 0L;
   volatile long right_enc_pos = 0L;
+  volatile double ratio = 0.0;
   /*static const int8_t ENC_STATES [] = {0,1,-1,0,-1,0,0,1,1,0,0,-1,0,-1,1,0};  //encoder lookup table
   
   /* Interrupt routine for RIGHT encoder, taking care of actual counting */
   void ISR1(){ 
-    if(readPWM()==0){
+    revData=readRev();
+    if(revData.left_reverse==0){
       left_enc_pos++;
     }else{
       left_enc_pos--;
@@ -83,7 +86,8 @@
   }
 
   void ISR2(){ 
-    if(readPWM()==0){
+    revData=readRev();
+    if(revData.right_reverse==0){
       right_enc_pos++;
     }else{
       right_enc_pos--;
@@ -93,6 +97,9 @@
   /* Wrap the encoder reading function */
   long readEncoder(int i) {
     if (i == LEFT) return left_enc_pos;
+    /*return (0.000115*pow(left_enc_pos,2)-0.145*left_enc_pos+147.319);*/
+    /*else return (0.00004315*pow(right_enc_pos,2)-0.04*right_enc_pos+151.964);*/
+    /*else return right_enc_pos*(-0.000026*pow(readSpeed(),2)+0.0104*readSpeed()+6.13);*/
     else return right_enc_pos;
   }
 

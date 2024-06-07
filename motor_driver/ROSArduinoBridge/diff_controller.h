@@ -33,9 +33,9 @@ SetPointInfo;
 SetPointInfo leftPID, rightPID;
 
 /* PID Parameters */
-int Kp = 80;
+int Kp = 120;
 int Kd = 12;
-int Ki = 1;
+int Ki = 0;
 int Ko = 50;
 
 unsigned char moving = 0; // is the base in motion?
@@ -120,8 +120,19 @@ void updatePID() {
     return;
   }
 
+  Kp = 120;
+  Kd = 12;
+  Ki = 0;
+  Ko = 50;
+
   /* Compute PID update for each motor */
   doPID(&rightPID);
+
+  Kp = 20;
+  Kd = 12;
+  Ki = 0;
+  Ko = 50;
+
   doPID(&leftPID);
 
   /* Set the motor speeds accordingly */
