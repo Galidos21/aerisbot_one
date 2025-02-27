@@ -64,6 +64,15 @@
 
    /* L298 Motor driver*/
    #define L298_MOTOR_DRIVER
+
+   /* MMA7361 Accelerometer*/
+   //#define MMA7361_ACCELEROMETER
+   #undef MMA7361_ACCELEROMETER
+
+   /* MMA7361 Accelerometer*/
+   #define MPU6050_GYROSCOPE
+   //#undef MPU6050_GYROSCOPE
+   
 #endif
 
 //#define USE_SERVOS  // Enable use of PWM servos as defined in servos.h
@@ -104,7 +113,7 @@
   #include "diff_controller.h"
 
   /* Run the PID loop at 30 times per second */
-  #define PID_RATE           3    // Hz
+  #define PID_RATE           5    // Hz
 
   /* Convert the rate into an interval */
   const int PID_INTERVAL = 1000 / PID_RATE;
@@ -114,7 +123,7 @@
 
   /* Stop the robot if it hasn't received a movement command
    in this number of milliseconds */
-  #define AUTO_STOP_INTERVAL 10000
+  #define AUTO_STOP_INTERVAL 5000
   long lastMotorCommand = AUTO_STOP_INTERVAL;
 #endif
 
@@ -155,6 +164,8 @@ void resetCommand() {
   arg = 0;
   index = 0;
 }
+
+Gyro_values gyroValues;
 
 /* Run a command.  Commands are defined in commands.h */
 int runCommand() {
@@ -206,7 +217,7 @@ int runCommand() {
 #endif
     
 #ifdef USE_BASE
-  case READ_ENCODERS:
+   case READ_ENCODERS:
     Serial.print(readEncoder(LEFT));
     Serial.print(" ");
     Serial.println(readEncoder(RIGHT));
@@ -247,6 +258,46 @@ int runCommand() {
     Ki = pid_args[2];
     Ko = pid_args[3];
     Serial.println("OK");
+    Serial.print(Kp);
+    Serial.print(" ");
+    Serial.print(Kd);
+    Serial.print(" ");
+    Serial.print(Ki);
+    Serial.print(" ");
+    Serial.println(Ko);
+    break;
+  case READ_RPM:
+    /* Reset the auto stop timer */
+    lastMotorCommand = millis();
+    resetPID();
+    moving = 0; // Sneaky way to temporarily disable the PID
+    setMotorSpeeds(arg1, arg2);
+    Serial.println("OK");
+    delay(2000);
+    Serial.println(readRPM(LEFT));
+    Serial.println(readRPM(RIGHT));
+    break;
+  case READ_GYRO:
+    gyroValues = readGyro();
+    Serial.print(gyroValues.accel[0]);
+    Serial.print(" ");
+    Serial.print(gyroValues.accel[1]);
+    Serial.print(" ");
+    Serial.print(gyroValues.accel[2]);
+    Serial.print(" ");
+    Serial.print(gyroValues.gyro[0]);
+    Serial.print(" ");
+    Serial.print(gyroValues.gyro[1]);
+    Serial.print(" ");
+    Serial.print(gyroValues.gyro[2]);
+    Serial.print(" ");
+    Serial.print(gyroValues.quat[0]);
+    Serial.print(" ");
+    Serial.print(gyroValues.quat[1]);
+    Serial.print(" ");
+    Serial.print(gyroValues.quat[2]);
+    Serial.print(" ");
+    Serial.println(gyroValues.quat[3]);
     break;
 #endif
   default:
@@ -257,7 +308,7 @@ int runCommand() {
 
 /* Setup function--runs once at startup. */
 void setup() {
-  Serial.begin(BAUDRATE);
+  
   // Serial.begin(57600);
 
 // Initialize the motor controller if used */
@@ -277,10 +328,23 @@ void setup() {
     // enable PCINT1 and PCINT2 interrupt in the general interrupt mask
     // PCICR |= (1 << PCIE2);
     //  unsigned char reverse;
+    #ifdef MPU6050_GYROSCOPE
+    mpu.begin();
+ 
+    mpu.Set_DMP_Output_Rate_Hz(10);          // Set the DMP output rate from 200Hz to 5 Minutes.
+    //mpu.Set_DMP_Output_Rate_Seconds(10);   // Set the DMP output rate in Seconds
+    //mpu.Set_DMP_Output_Rate_Minutes(5);    // Set the DMP output rate in Minute
+    mpu.SetAddress(MPU6050_DEFAULT_ADDRESS);
+    mpu.CalibrateMPU();                      // Calibrates the MPU.
+    mpu.load_DMP_Image();                    // Loads the DMP image into the MPU and finish configuration.
+    mpu.DMP_InterruptEnable(0);
+    mpu.on_FIFO(imu_data);               // Set callback function that is triggered when FIFO Data is retrieved
+  #endif
     attachInterrupt(digitalPinToInterrupt(LEFT_ENC), ISR1, RISING);
     attachInterrupt(digitalPinToInterrupt(RIGHT_ENC), ISR2, RISING);
-    
   #endif
+
+  Serial.begin(BAUDRATE);
   initMotorController();
   resetPID();
 #endif
@@ -302,12 +366,6 @@ void setup() {
    interval and check for auto-stop conditions.
 */
 void loop() {
-
-  /*Serial.print(rightPID.PrevInput);
-  Serial.print(" ");
-  Serial.println(rightPID.TargetTicksPerFrame);*/
-  
-  // runCommand();
   
   while (Serial.available() > 0) {
     
@@ -361,6 +419,10 @@ void loop() {
     setMotorSpeeds(0, 0);
     moving = 0;
   }
+  
+  #ifdef MPU6050_GYROSCOPE
+    mpu.dmp_read_fifo(false);
+  #endif
 #endif
 
 // Sweep servos

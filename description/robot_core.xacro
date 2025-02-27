@@ -179,4 +179,34 @@
         <mu2 value="0.001"/>
     </gazebo>
 
+    <!-- IMU SENSOR -->
+
+    <joint name= "imu_sensor_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="imu_sensor"/>
+        <origin xyz="-0.07 0 0.02"/>
+    </joint>
+
+    <link name="imu_sensor">
+        <visual>
+            <geometry>
+                <box size="0.02 0.02 0.005"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <sensor type="imu" name="imu_sensor">
+            <origin xyz="0 0 0"/>
+            <update_rate>100</update_rate>
+            <imu>
+                <angular_velocity>true</angular_velocity>
+                <linear_acceleration>true</linear_acceleration>
+                <orientation>true</orientation>
+            </imu>
+        </sensor>
+    </link>
+
+    <gazebo reference="chassis">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+
 </robot>

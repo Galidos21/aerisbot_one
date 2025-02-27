@@ -10,6 +10,7 @@ typedef struct {
   double TargetTicksPerFrame;    // target speed in ticks per frame
   long Encoder;                  // encoder count
   long PrevEnc;                  // last encoder count
+  long RPM;
 
   /*
   * Using previous input (PrevInput) instead of PrevError to avoid derivative kick,
@@ -33,10 +34,10 @@ SetPointInfo;
 SetPointInfo leftPID, rightPID;
 
 /* PID Parameters */
-int Kp = 120;
-int Kd = 12;
+int Kp = 8;
+int Kd = 5;
 int Ki = 0;
-int Ko = 50;
+int Ko = 20;
 
 unsigned char moving = 0; // is the base in motion?
 
@@ -52,6 +53,7 @@ void resetPID(){
    leftPID.TargetTicksPerFrame = 0.0;
    leftPID.Encoder = readEncoder(LEFT);
    leftPID.PrevEnc = leftPID.Encoder;
+   leftPID.RPM = readRPM(LEFT);
    leftPID.output = 0;
    leftPID.PrevInput = 0;
    leftPID.ITerm = 0;
@@ -59,6 +61,7 @@ void resetPID(){
    rightPID.TargetTicksPerFrame = 0.0;
    rightPID.Encoder = readEncoder(RIGHT);
    rightPID.PrevEnc = rightPID.Encoder;
+   rightPID.RPM = readRPM(RIGHT);
    rightPID.output = 0;
    rightPID.PrevInput = 0;
    rightPID.ITerm = 0;
@@ -71,7 +74,9 @@ void doPID(SetPointInfo * p) {
   int input;
 
   //Perror = p->TargetTicksPerFrame - (p->Encoder - p->PrevEnc);
-  input = p->Encoder - p->PrevEnc;
+  //input = p->Encoder - p->PrevEnc;
+
+  input = p->RPM;
   Perror = p->TargetTicksPerFrame - input;
 
 
@@ -105,8 +110,11 @@ void doPID(SetPointInfo * p) {
 /* Read the encoder values and call the PID routine */
 void updatePID() {
   /* Read the encoders */
-  leftPID.Encoder = readEncoder(LEFT);
-  rightPID.Encoder = readEncoder(RIGHT);
+  //leftPID.Encoder = readEncoder(LEFT);
+  //rightPID.Encoder = readEncoder(RIGHT);
+
+  leftPID.RPM = readRPM(LEFT);
+  rightPID.RPM = readRPM(RIGHT);
   
   /* If we're not moving there is nothing more to do */
   if (!moving){
@@ -120,21 +128,26 @@ void updatePID() {
     return;
   }
 
-  Kp = 120;
-  Kd = 12;
-  Ki = 0;
-  Ko = 50;
+  //Kp = 120;
+  //Kd = 12;
+  //Ki = 1;
+  //Ko = 25;
 
   /* Compute PID update for each motor */
   doPID(&rightPID);
 
-  Kp = 20;
-  Kd = 12;
-  Ki = 0;
-  Ko = 50;
+  //Kp = 20;
+  //Kd = 12;
+  //Ki = 0;
+  //Ko = 50;
 
   doPID(&leftPID);
+  
 
   /* Set the motor speeds accordingly */
   setMotorSpeeds(leftPID.output, rightPID.output);
+
+  /*Serial.print(leftPID.RPM);
+  Serial.print(" ");
+  Serial.println(rightPID.RPM);*/
 }
