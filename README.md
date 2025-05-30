@@ -7,9 +7,9 @@ This project is based on the articubot_one developed by joshnewans: https://gith
 He has a sweet youtube tutorial series too 🦾: https://www.youtube.com/@ArticulatedRobotics
 
 ## What makes Aerisbot 1 different? 🤔
-My main goal is to construct a functional differential robot based in ROS2 with the lowest possible budget and able to be aquired locally.
+My main goal is to construct a functional differential robot based in ROS2 with the lowest possible budget and able to be acquired locally.
 
-Other objective that I condidered was to obtain an accurate odometry to reflect the robot position in a virtual environment (Gazebo) and in the future add control algorithms. To do it I thought it was a good idea to experiment with odometry fusion combining two sensor readings (Sensor Fusion for State Estimation: IMU sensor + wheel encoders) 🤓 
+Other objective that I considered was to obtain an accurate odometry to reflect the robot position in a virtual environment (Gazebo) and in the future add control algorithms. To do it I thought it was a good idea to experiment with odometry fusion combining two sensor readings (Sensor Fusion for State Estimation: IMU sensor + wheel encoders) 🤓 
 
 Slam? Self-driving? machine learning? well, I intend to cover that in the future. 🚀🚀
 
