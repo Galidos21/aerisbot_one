@@ -33,6 +33,7 @@
     setMotorSpeed(RIGHT, rightSpeed);
   }
 #elif defined POLOLU_MC33926
+
   /* Include the Pololu library */
   #include "DualMC33926MotorShield.h"
 

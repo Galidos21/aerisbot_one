@@ -73,6 +73,12 @@
   volatile long left_enc_pos = 0L;
   volatile long right_enc_pos = 0L;
   volatile double ratio = 0.0;
+  volatile long last_left_enc_pos = 0L;
+  volatile long last_right_enc_pos = 0L;
+  volatile long last_left_millis = 0L;
+  volatile long last_right_millis = 0L;
+  volatile float left_RPM = 0.0;
+  volatile float right_RPM = 0.0;
   /*static const int8_t ENC_STATES [] = {0,1,-1,0,-1,0,0,1,1,0,0,-1,0,-1,1,0};  //encoder lookup table
   
   /* Interrupt routine for RIGHT encoder, taking care of actual counting */
@@ -101,6 +107,21 @@
     /*else return (0.00004315*pow(right_enc_pos,2)-0.04*right_enc_pos+151.964);*/
     /*else return right_enc_pos*(-0.000026*pow(readSpeed(),2)+0.0104*readSpeed()+6.13);*/
     else return right_enc_pos;
+  }
+
+  float readRPM(int i){
+    if (i == LEFT) {
+      //left_RPM = (float)(millis() - last_left_millis);
+      left_RPM = ((float)(left_enc_pos - last_left_enc_pos)*3000)/(float)(millis() - last_left_millis);
+      last_left_enc_pos = left_enc_pos;
+      last_left_millis = millis();
+      return left_RPM;
+    }else {
+      right_RPM = ((float)(right_enc_pos - last_right_enc_pos)*3000)/(float)(millis() - last_right_millis);
+      last_right_enc_pos = right_enc_pos;
+      last_right_millis = millis();
+      return right_RPM;
+    }
   }
 
   /* Wrap the encoder reset function */

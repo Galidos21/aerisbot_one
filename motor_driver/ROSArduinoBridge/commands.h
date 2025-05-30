@@ -19,9 +19,9 @@
 #define UPDATE_PID     'u'
 #define DIGITAL_WRITE  'w'
 #define ANALOG_WRITE   'x'
+#define READ_RPM       'f'
+#define READ_GYRO      'g'
 #define LEFT            0
 #define RIGHT           1
 
 #endif
-
-
