@@ -13,7 +13,7 @@ Other objective that I condidered was to obtain an accurate odometry to reflect 
 
 Slam? Self-driving? machine learning? well, I intend to cover that in the future. 🚀🚀
 
-![robot demo](images/robot_demo.gif){ width="800" height="400" style="display: block; margin: 0 auto" }
+![robot demo](images/robot_demo.gif)
 
 ## Bill of Materials 🛠️
 > - Arduino UNO
@@ -27,4 +27,4 @@ Slam? Self-driving? machine learning? well, I intend to cover that in the future
 > - LTC3442 Boost converter
 
 Meanwhile, the rest of the documentation 😅:
-![under construction](images/under_construction.jpg){ width="800" height="400" style="display: block; margin: 0 auto" }
+![under construction](images/under_construction.jpg)
