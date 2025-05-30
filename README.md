@@ -1,7 +1,30 @@
-## Robot Package Template
+# ROS2 Mobile Robot Aerisbot 1 🚗📷
 
-This is a GitHub template. You can make your own copy by clicking the green "Use this template" button.
+This is a small autonomous differential robot built with ROS2 Humple. It includes basic IMU-based orientation, camera streaming, and motor control.
 
-It is recommended that you keep the repo/package name the same, but if you do change it, ensure you do a "Find all" using your IDE (or the built-in GitHub IDE by hitting the `.` key) and rename all instances of `aerisbot_one` to whatever your project's name is.
+This project is based on the articubot_one developed by joshnewans: https://github.com/joshnewans/articubot_one/tree/main.
 
-Note that each directory currently has at least one file in it to ensure that git tracks the files (and, consequently, that a fresh clone has direcctories present for CMake to find). These example files can be removed if required (and the directories can be removed if `CMakeLists.txt` is adjusted accordingly).
+He has a sweet youtube tutorial series too 🦾: https://www.youtube.com/@ArticulatedRobotics
+
+## What makes Aerisbot 1 different? 🤔
+My main goal is to construct a functional differential robot based in ROS2 with the lowest possible budget and able to be aquired locally.
+
+Other objective that I condidered was to obtain an accurate odometry to reflect the robot position in a virtual environment (Gazebo) and in the future add control algorithms. To do it I thought it was a good idea to experiment with odometry fusion combining two sensor readings (Sensor Fusion for State Estimation: IMU sensor + wheel encoders) 🤓 
+
+Slam? Self-driving? machine learning? well, I intend to cover that in the future. 🚀🚀
+
+![robot demo](images/demo.gif)
+
+> 🛠️ **Bill of Materials:**  
+    - Arduino UNO
+    - Raspberry Pi 4B
+    - Raspberry Pi Camera
+    - Differential robot case
+    - TB6612FNG Dual H-Bridge
+    - 2 X MOCH22A Optical encoder
+    - MPU6050
+    - Battery pack / Power bank
+    - LTC3442 Boost converter
+
+Meanwhile, the rest of the documentation:
+![under construction](images/demo.gif)
