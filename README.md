@@ -1,6 +1,6 @@
 # ROS2 Mobile Robot Aerisbot 1 🚗📷
 
-This is a small autonomous differential robot built with ROS2 Humple. It includes basic IMU-based orientation, camera streaming, and motor control.
+This is a small differential robot built with ROS2 Humble. It includes basic IMU-based orientation, camera streaming, and motor control.
 
 This project is based on the articubot_one developed by joshnewans: https://github.com/joshnewans/articubot_one/tree/main.
 
