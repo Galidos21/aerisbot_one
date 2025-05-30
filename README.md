@@ -13,18 +13,18 @@ Other objective that I condidered was to obtain an accurate odometry to reflect 
 
 Slam? Self-driving? machine learning? well, I intend to cover that in the future. 🚀🚀
 
-![robot demo](images/demo.gif)
+![robot demo](images/robot_demo.gif){ width="800" height="400" style="display: block; margin: 0 auto" }
 
-> 🛠️ **Bill of Materials:**  
-    - Arduino UNO
-    - Raspberry Pi 4B
-    - Raspberry Pi Camera
-    - Differential robot case
-    - TB6612FNG Dual H-Bridge
-    - 2 X MOCH22A Optical encoder
-    - MPU6050
-    - Battery pack / Power bank
-    - LTC3442 Boost converter
+## Bill of Materials 🛠️
+> - Arduino UNO
+> - Raspberry Pi 4B
+> - Raspberry Pi Camera
+> - Differential robot case
+> - TB6612FNG Dual H-Bridge
+> - 2 X MOCH22A Optical encoder
+> - MPU6050
+> - Battery pack / Power bank
+> - LTC3442 Boost converter
 
-Meanwhile, the rest of the documentation:
-![under construction](images/demo.gif)
+Meanwhile, the rest of the documentation 😅:
+![under construction](images/under_construction.jpg){ width="800" height="400" style="display: block; margin: 0 auto" }
