@@ -29,6 +29,18 @@ Slam? Self-driving? machine learning? well, I intend to cover that in the future
 | **Battery Pack / Power Bank** | A portable power source that supplies regulated voltage to the Raspberry Pi and possibly the motors, enabling mobile operation | <img src="images/Battery_pack.webp" alt="Power_bank" width="250"/> |
 | **LTC3442 Boost Converter** | A step-up DC-DC converter used to regulate and boost voltage from the battery to ensure stable power delivery to motor driver | <img src="images/LTC3442.webp" alt="Converter" width="250"/> |
 
+## Connecting everything 🔌
+During tests the overall spend current surpasses the rated current of a power bank (2A) activating the protection and shutting down the RaspberryPI during heavy duty tasks. This power bank is the cheapest one I could get, so I decided to use two of them as power source, one for energizing control/sensors and the other to feed the motors.
+
+### Control and sensors power source 🪫
+The connection is pretty straightforward, the Raspberry PI is connected directly with a USB Type C cable to one of the power banks and the rest of the connections for this side are derived from it. The Arduino UNO is energized through an USB connection, which will serve as serial communication path too and the rest of the sensors like the gyroscope and encoders are connected to the 5V pins inside the Raspberry PI. Additionally, the motor driver needs to be powered by supplid with logic 5V for motor control.
+
+> ⚠️ It is important to note that if high power demand USB devices such as cameras o lidars need to be connected to the Raspberry PI, USB hub with independent power source should be used to not stress the socket. The raspberry is only capable of delivering 1.2A of current throgh the USB ports combined.
+
+### Motors power source ⚡
+To extract the maximum possible speed from the motors, I used a boost converter that transform the 5V of the power bank to the 9V motor rated voltage. It also regulates the output voltage delivered to the motor driver, which adjust the speed of the motors using Pulse Width Modulation (PWM) according to the control signals received.
+
+<img src="images/diagrams/power_connection.png" alt="power_connections" width="100%">
 
 Meanwhile, the rest of the documentation 😅:
 ![under construction](images/under_construction.jpg)
